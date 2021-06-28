@@ -7,7 +7,7 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - master
 jobs:
-  build_and_deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -33,3 +33,27 @@ jobs:
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_MYFIRSTPROJECT_FI }}'
           channelId: live
           projectId: myfirstproject-fi
+  deploy:
+    name: Deploy to firebase
+    runs-on: ubuntu-latest
+    # only run if build job complte successfully 
+    needs: [build]
+    steps:
+      # building the app before deploy
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: '10.x'
+      # Install the dependencies need to build the app
+      - name: Install Dependencies
+        run: npm install
+      # build the app
+      - name: Build the app artifact for prod
+        run: npm run build --prod
+      # ddeploy the app artifact to firebase
+      - name: Deploy angular app to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
