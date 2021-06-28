@@ -15,6 +15,8 @@ export class DashboardComponent implements OnInit {
   
   last: any
   fixed: any
+  model: any = {}
+  loading = false;
 
   constructor(private firestore: AngularFirestore) {
     this.getInitialPlayers();
@@ -69,6 +71,25 @@ export class DashboardComponent implements OnInit {
       //   return of( first, second)
       // }))
 
+    
+  }
+
+  checkLoginDis(): boolean {
+    return this.model.name == null || this.model.sports == null
+  }
+
+
+  setplayers() {
+
+    console.log("add players "+this.model.name)
+
+    this.firestore.collection("players")
+    .add({name: this.model.name, sports: this.model.sports})
+    .then(res=> {
+      console.log("succesfully added to firestore!")
+    }, err=> {
+      console.log("there is an error while adding!")
+    })
     
   }
 

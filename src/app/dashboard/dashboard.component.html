@@ -1,8 +1,37 @@
 <br>
 <br>
 <br>
+<div>
+  <form name="form" (ngSubmit)="f.form.valid && setplayers()" #f="ngForm" fxShow="true" style="width: 95%;"  
+      fxLayout="column"
+        fxLayoutAlign="center" fxLayoutGap="4px">
+
+        <div >
+            <mat-form-field appearance="outline" fxFlex="98">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Enter the name of the person" name="name" [(ngModel)]="model.name"
+                    #for="ngModel">
+            </mat-form-field>
+        </div>
+        <div >
+            <mat-form-field appearance="outline" fxFlex="98">
+                <mat-label>Enter the Sports</mat-label>
+                <textarea  matInput placeholder="which sports" type="description" name="sports"
+                 [(ngModel)]="model.sports" #description="ngModel">
+                </textarea>
+            </mat-form-field>
+        </div>
+        <div fxFlex>
+            <button class="btn btn-info height_40" type="submit" [disabled]="checkLoginDis() || loading" fxFlex="98">
+                <i class="fa fa-spinner fa-spin" *ngIf="loading"></i>
+                Submit
+            </button>
+        </div>
+    </form>
+</div>
 <br>
 Player Details are..
+<br>
 <button (click)="getPlayers()"> Load more</button>
 <div fxLayout="column" >
     <ul>
